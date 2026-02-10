@@ -1,6 +1,5 @@
 <routes>
-    <vType id="car" accel="1.0" decel="4.5" length="5" maxSpeed="16" guiShape="passenger"/>
-<routes>
+
     <vType id="car" accel="1.0" decel="4.5" length="5" maxSpeed="16" guiShape="passenger"/>
 
     <!-- STRAIGHT -->
@@ -9,13 +8,13 @@
     <route id="W_E" edges="-E3 E0"/>
     <route id="E_W" edges="-E0 E3"/>
 
-    <!-- LEFT TURNS (FREE) -->
+    <!-- LEFT TURNS -->
     <route id="N_W" edges="-E5 E3"/>
     <route id="W_S" edges="-E3 E4"/>
     <route id="S_E" edges="-E4 E0"/>
     <route id="E_N" edges="-E0 E5"/>
 
-    <!-- RIGHT TURNS (SIGNAL CONTROLLED) -->
+    <!-- RIGHT TURNS -->
     <route id="N_E" edges="-E5 E0"/>
     <route id="E_S" edges="-E0 E4"/>
     <route id="S_W" edges="-E4 E3"/>
@@ -36,39 +35,5 @@
     <flow id="f10" type="car" route="E_S" begin="0" end="1000" number="60"/>
     <flow id="f11" type="car" route="S_W" begin="0" end="1000" number="60"/>
     <flow id="f12" type="car" route="W_N" begin="0" end="1000" number="60"/>
-</routes>
 
-    <!-- STRAIGHT -->
-    <route id="N_S" edges="-E5 E4"/>
-    <route id="S_N" edges="-E4 E5"/>
-    <route id="W_E" edges="-E3 E0"/>
-    <route id="E_W" edges="-E0 E3"/>
-
-    <!-- LEFT TURNS (FREE) -->
-    <route id="N_W" edges="-E5 E3"/>
-    <route id="W_S" edges="-E3 E4"/>
-    <route id="S_E" edges="-E4 E0"/>
-    <route id="E_N" edges="-E0 E5"/>
-
-    <!-- RIGHT TURNS (SIGNAL CONTROLLED) -->
-    <route id="N_E" edges="-E5 E0"/>
-    <route id="E_S" edges="-E0 E4"/>
-    <route id="S_W" edges="-E4 E3"/>
-    <route id="W_N" edges="-E3 E5"/>
-
-    <!-- TRAFFIC FLOWS -->
-    <flow id="f1" type="car" route="N_S" begin="0" end="1000" number="120"/>
-    <flow id="f2" type="car" route="S_N" begin="0" end="1000" number="120"/>
-    <flow id="f3" type="car" route="W_E" begin="0" end="1000" number="120"/>
-    <flow id="f4" type="car" route="E_W" begin="0" end="1000" number="120"/>
-
-    <flow id="f5" type="car" route="N_W" begin="0" end="1000" number="60"/>
-    <flow id="f6" type="car" route="W_S" begin="0" end="1000" number="60"/>
-    <flow id="f7" type="car" route="S_E" begin="0" end="1000" number="60"/>
-    <flow id="f8" type="car" route="E_N" begin="0" end="1000" number="60"/>
-
-    <flow id="f9"  type="car" route="N_E" begin="0" end="1000" number="60"/>
-    <flow id="f10" type="car" route="E_S" begin="0" end="1000" number="60"/>
-    <flow id="f11" type="car" route="S_W" begin="0" end="1000" number="60"/>
-    <flow id="f12" type="car" route="W_N" begin="0" end="1000" number="60"/>
 </routes>

@@ -1,11 +1,9 @@
 import traci
 
-# Start SUMO
 traci.start(["sumo-gui", "-c", "simulation.sumocfg"])
 
 TLS_ID = "J0"
 
-# Incoming edges
 incoming_edges = {
     "N": "E5",
     "S": "E4",
@@ -16,33 +14,60 @@ incoming_edges = {
 def get_density(edge):
     return traci.edge.getLastStepVehicleNumber(edge)
 
-# Force SUMO to use TraCI control (disable static all-red program)
+# Force TraCI control
 traci.trafficlight.setProgram(TLS_ID, "0")
+
+previous_dir = None
 
 while traci.simulation.getMinExpectedNumber() > 0:
 
     densities = {d: get_density(e) for d, e in incoming_edges.items()}
     max_dir = max(densities, key=densities.get)
 
-    # 12 SIGNAL LINKS → 12 CHARACTERS REQUIRED
-    # r = red, g = green, y = yellow
+    # --- YELLOW PHASE before switching ---
+    if previous_dir and previous_dir != max_dir:
 
-    if max_dir == "N":       # Only North open
-        state = "GGGrrrrrrrrr"   # 3 greens, rest red
+        if previous_dir == "N":
+            yellow = "yyyrrrrrrrrr"
+        elif previous_dir == "S":
+            yellow = "rrryyyrrrrrr"
+        elif previous_dir == "W":
+            yellow = "rrrrrryyyrrr"
+        else:  # East
+            yellow = "rrrrrrrrryyy"
 
-    elif max_dir == "S":     # Only South open
+        traci.trafficlight.setRedYellowGreenState(TLS_ID, yellow)
+
+        # Hold yellow for 3 seconds
+        for _ in range(3):
+            traci.simulationStep()
+
+    # --- GREEN PHASE ---
+    if max_dir == "N":
+        state = "GGGrrrrrrrrr"
+    elif max_dir == "S":
         state = "rrrGGGrrrrrr"
-
-    elif max_dir == "W":     # Only West open
+    elif max_dir == "W":
         state = "rrrrrrGGGrrr"
-
-    else:                    # Only East open
+    else:  # East
         state = "rrrrrrrrrGGG"
 
     traci.trafficlight.setRedYellowGreenState(TLS_ID, state)
+    previous_dir = max_dir
 
-    # Keep that signal green for 10 seconds
-    for _ in range(10):
+    # --- DYNAMIC GREEN TIME ---
+    vehicle_count = densities[max_dir]
+
+    if vehicle_count <= 5:
+        green_time = 6
+    elif vehicle_count <= 12:
+        green_time = 10
+    else:
+        green_time = 15
+
+    print(f"Direction {max_dir} | Vehicles: {vehicle_count} | Green Time: {green_time}s")
+
+    for _ in range(green_time):
         traci.simulationStep()
 
 traci.close()
